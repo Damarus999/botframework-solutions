@@ -17,10 +17,10 @@ order: 6
 
 
 ## Response Files
-To configure responses for your skill project, you'll need a .json file and a text template file (.tt) for each collection of responses. An example of each can be found in the Skill Template project in the Responses folder.
+To configure responses for your skill project, you'll need a `.json` file and a text template file (`.tt`) for each collection of responses. An example of each can be found in the Skill Template project in the Responses folder.
 
 ### Json Structure
-Responses can be stored in the following format to be used in your project. Each .json file should have a Build Action of **EmbeddedResource** to be loaded properly at runtime. 
+Responses can be stored in the following format to be used in your project. Each `.json` file should have a Build Action of **EmbeddedResource** to be loaded properly at runtime. 
 ```
 "templateName": {
     "replies": [
@@ -46,11 +46,11 @@ Responses can be stored in the following format to be used in your project. Each
 | suggestedActions (optional) | Sets simple suggestedActions on the response. |
 
 #### Localization
-To provide localized versions of responses, add additional .json files for each language. The file name format should be name.locale.json (e.g. `MyResponses.de.json`).
+To provide localized versions of responses, add additional `.json` files for each language. The file name format should be name.locale.json (e.g. `MyResponses.de.json`).
 
 
 ### Text Template
-The text template (.tt) file auto-generates a class representing the names of the responses in the .json file. This allows you to reference the responses names more easily. The text template and .json files should have the same root name and be in the same folder (e.g. `MyResponses.tt` and `MyResponses.json`).
+The text template (`.tt`) file auto-generates a class representing the names of the responses in the `.json` file. This allows you to reference the responses names more easily. The text template and `.json` files should have the same root name and be in the same folder (e.g. `MyResponses.tt` and `MyResponses.json`).
 
 ```csharp
 namespace SkillSample.Responses.Sample
@@ -68,7 +68,7 @@ namespace SkillSample.Responses.Sample
 ```
 
 ## Adaptive Cards
-Adaptive cards can be added in .json format to the Content folder to be accessed throughout your project. Each .json file should have a Build Action of EmbeddedResource to be loaded properly at runtime. 
+Adaptive cards can be added in `.json` format to the Content folder to be accessed throughout your project. Each `.json` file should have a Build Action of EmbeddedResource to be loaded properly at runtime. 
 
 ### Card Object
 
@@ -110,10 +110,10 @@ new Card("MyCard", new MyCardData("Jane"))
 ```
 
 ## Response Manager
-The ResponseManager class loads each response file that is specified into a collection of responses for your bot. It is initialized in Startup.cs and can be used throughout the project.
+The ResponseManager class loads each response file that is specified into a collection of responses for your bot. It is initialized in `Startup.cs` and can be used throughout the project.
 
 ## Initalizing the ResponseManager
-In Startup.cs, the following code initalizes your ResponseManager object with the specified locales and your response files:
+In `Startup.cs`, the following code initializes your ResponseManager object with the specified locales and your response files:
 
 ```csharp
     // Configure responses
@@ -125,7 +125,7 @@ In Startup.cs, the following code initalizes your ResponseManager object with th
 ```
 
 ## Using the ResponseManager
-Once you have created your .json and .tt files and initalized your ResponseManager in Startup.cs, you can use the respnse manager to build your responses. The following methods and overloads are available to you.
+Once you have created your `.json` and `.tt` files and initialized your ResponseManager in `Startup.cs`, you can use the response manager to build your responses. The following methods and overloads are available to you.
 
 ### GetResponse()
 

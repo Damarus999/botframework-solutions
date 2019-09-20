@@ -38,13 +38,13 @@ If there is an utterance that you expect would be applied to multiple Skills, ta
 * Restart
 
 ### Update LUIS model
-You can update you LUIS model in LUIS portal. Or modify the .lu file then convert it to .json and upload to LUIS portal manually, or use `update_cognitive_models.ps1`
+You can update you LUIS model in LUIS portal. Or modify the `.lu` file then convert it to `.json` and upload to LUIS portal manually, or use `update_cognitive_models.ps1`
 
-How to convert .json to .lu:
+How to convert `.json` to `.lu`:
 ```bash
 ludown refresh -i YOUR_BOT_NAME.json
 ```
-How to convert .lu to .json:
+How to convert `.lu` to `.json`:
 ```bash
 ludown parse toluis --in YOUR_BOT_NAME.lu
 ```
@@ -65,7 +65,7 @@ Consider the multiple layers of communication a user may have with a Skill on th
 
 #### Speech & Text
 
-Speech & Text responses are stored in .json files, and offer the ability to provide a variety of responses and set the input hint on each Activity.
+Speech & Text responses are stored in `.json` files, and offer the ability to provide a variety of responses and set the input hint on each Activity.
 
 ```json
 {
@@ -113,10 +113,12 @@ You can use variables to map data to a card's content. For example, the JSON bel
     {
       "type": "AdaptiveCard",
       "id": "PointOfInterestViewCard",
-      
-      ## Support skill fallback
-Currently if you want to support skill switching scenarios like this in Virtual Assistant:
+    }
+```
 
+## Support skill fallback
+Currently if you want to support skill switching scenarios like this in Virtual Assistant:
+```
 - User: What's my meetings today?
 
 - Bot (Virtual Assistant, Calendar skill): [Meetings], do you want to hear the first one?
@@ -128,7 +130,7 @@ Currently if you want to support skill switching scenarios like this in Virtual 
 - User: Yes, please.
 
 - Bot (Virtual Assistant, To Do skill): [To do list].
-
+```
 You can make this happen by sending the FallbackEvent back to Virtual Assistant, to confirm whether other skills are able to handle this utterance.
 
 ```csharp
@@ -155,6 +157,7 @@ protected async Task<DialogTurnResult> SendFallback(WaterfallStepContext sc, Can
 ```
 
 If other skills can handle it, Virtual Assistant will cancel current skill and pass user input to the proper skill. If not, Virtual Assistant will send back a FallbackHandledEvent to continue current skill.
+```json
       "body": [
         {
           "type": "Container",
@@ -266,9 +269,9 @@ In the Point of Interest Skill, a route state model is passed to a Microsoft.Bot
         TravelDelaySpeak = GetFormattedTrafficDelayString(trafficTimeSpan)
     };
 
-    // Instantiate a new Card with reference to above JSON
-    var card = new Card("RouteDirectionsViewCard", routeDirectionsModel);
-
+	// Instantiate a new Card with reference to above JSON
+	var card = new Card("RouteDirectionsViewCard", routeDirectionsModel);
+    
     // Generate card response from the Skill
     var replyMessage = ResponseManager.GetCardResponse(POISharedResponses.SingleRouteFound, card);
 ```
@@ -282,7 +285,7 @@ private async Task<List<Card>> GetMeetingCardListAsync(DialogContext dc, List<Ev
     var state = await Accessor.GetAsync(dc.Context);
 
     var eventItemList = new List<Card>();
-
+    
     DateTime? currentAddedDateUser = null;
     foreach (var item in events)
     {
@@ -299,14 +302,14 @@ private async Task<List<Card>> GetMeetingCardListAsync(DialogContext dc, List<Ev
                 }
             });
         }
-
+    
         eventItemList.Add(new Card()
         {
             Name = "CalendarItem",
             Data = item.ToAdaptiveCardData(state.GetUserTimeZone())
         });
     }
-
+    
     return eventItemList;
 }
 
@@ -340,9 +343,9 @@ protected async Task<Activity> GetOverviewMeetingListResponseAsync(
             Indicator = string.Format(CalendarCommonStrings.ShowMeetingsIndicator, (firstIndex + 1).ToString(), lastIndex.ToString(), totalCount.ToString())
         }
     };
-
+    
     var eventItemList = await GetMeetingCardListAsync(dc, events);
-
+    
     return ResponseManager.GetCardResponse(templateId, overviewCard, tokens, "EventItemContainer", eventItemList);
 }
 ```
@@ -367,16 +370,16 @@ protected PromptOptions GetPointOfInterestChoicePromptOptions(List<PointOfIntere
             {
                 var item = pointOfInterestList[i].Name;
                 var address = pointOfInterestList[i].Street;
-
+    
                 List<string> synonyms = new List<string>()
                     {
                         item,
                         address,
                         (i + 1).ToString(),
                     };
-
+    
                 var suggestedActionValue = item;
-
+    
                 // Use response resource to get formatted name if multiple have the same name
                 if (pointOfInterestList.Where(x => x.Name == pointOfInterestList[i].Name).Skip(1).Any())
                 {
@@ -388,7 +391,7 @@ protected PromptOptions GetPointOfInterestChoicePromptOptions(List<PointOfIntere
                         };
                     suggestedActionValue = ResponseManager.GetResponse(promptTemplate, promptReplacements).Text;
                 }
-
+    
                 var choice = new Choice()
                 {
                     Value = suggestedActionValue,
@@ -396,7 +399,7 @@ protected PromptOptions GetPointOfInterestChoicePromptOptions(List<PointOfIntere
                 };
                 options.Choices.Add(choice);
             }
-
+    
             options.Prompt = ResponseManager.GetResponse(POISharedResponses.PointOfInterestSelection);
             return options;
         }
@@ -433,8 +436,8 @@ protected async Task<bool> ChoiceValidator(PromptValidatorContext<FoundChoice> p
             return true;
         }
     }
-
-    return false;
+    
+	return false;
 }
 ```
 
@@ -458,13 +461,13 @@ protected async Task HandleDialogExceptions(WaterfallStepContext sc, Exception e
 
     // log exception
     TelemetryClient.TrackExceptionEx(ex, sc.Context.Activity, sc.ActiveDialog?.Id);
-
+    
     // send error message to bot user
     await sc.Context.SendActivityAsync(ResponseManager.GetResponse(SharedResponses.ErrorMessage));
-
+    
     // clear state
     var state = await ConversationStateAccessor.GetAsync(sc.Context);
-    state.Clear();
+	state.Clear();
 }
 ```
 
@@ -479,7 +482,7 @@ For dialog state, you can save your data in `stepContext.State.Dialog[YOUR_DIALO
 Use dialog options to transfer data among dialogs. Read [Create advanced conversation flow using branches and loops](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-dialog-manage-complex-conversation-flow?view=azure-bot-service-4.0&tabs=csharp) to learn more about dialog management.
 
 ## Skill switching in a Virtual Assistant
-A commonly asked scenario is how to enable A Virtual Assistant to appropriately switch Skills if a user's utterances require it, like in the following example:
+A commonly asked scenario is how to enable a Virtual Assistant to appropriately switch Skills if a user's utterances require it, like in the following example:
 ```
 - User: What meetings do I have today?
 

@@ -63,7 +63,7 @@ An example transcript file demonstrating the Skill in action can be found [here]
 
 ## Language Understanding (LUIS)
 
-LUIS models for the Skill are provided in .LU file format as part of the Skill. These are currently available in English with other languages to follow.
+LUIS models for the Skill are provided in `.lu` file format as part of the Skill. These are currently available in English with other languages to follow.
 
 The following Top Level intents are available with the main `settings` LUIS model
 
@@ -131,7 +131,7 @@ The MSBot tool will outline the deployment plan including location and SKU. Ensu
 
 > After deployment is complete, it's **imperative** that you make a note of the .bot file secret provided as this will be required for later steps. The secret can be found near the top of the execution output and will be in purple text.
 
-- Update your `appsettings.json` file with the newly created .bot file name and .bot file secret.
+- Update your `appsettings.json` file with the newly created `.bot` file name and `.bot` file secret.
 - Run the following command and retrieve the InstrumentationKey for your Application Insights instance and update `InstrumentationKey` in your `appsettings.json` file.
 
 ```
@@ -148,7 +148,7 @@ msbot list --bot YOURBOTFILE.bot --secret YOUR_BOT_SECRET
   }
 ```
 
-- Finally, add the .bot file paths for each of your language configurations (English only at this time).
+- Finally, add the `.bot` file paths for each of your language configurations (English only at this time).
 
 ```json
 "defaultLocale": "en-us",
@@ -160,7 +160,7 @@ msbot list --bot YOURBOTFILE.bot --secret YOUR_BOT_SECRET
     }
 ```
 
-Once you have followed the deployment instructions above, open the provided .bot file with the Bot Framework Emulator.
+Once you have followed the deployment instructions above, open the provided `.bot` file with the Bot Framework Emulator.
 
 ### Adding the Skill to an existing Virtual Assistant deployment
 

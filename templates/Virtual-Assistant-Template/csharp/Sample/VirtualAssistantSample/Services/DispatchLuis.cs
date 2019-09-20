@@ -25,6 +25,7 @@ namespace Luis
             BingSearchSkill, 
             calendarSkill, 
             pointOfInterestSkill, 
+            q_Office, 
             None
         };
         [JsonProperty("intents")]

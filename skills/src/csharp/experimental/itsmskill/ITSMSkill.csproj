@@ -10,6 +10,8 @@
     <Content Remove="Content\Knowledge.json" />
     <Content Remove="Content\Ticket.1.0.json" />
     <Content Remove="Content\Ticket.json" />
+    <Content Remove="Content\TicketNoClose.1.0.json" />
+    <Content Remove="Content\TicketNoClose.json" />
     <Content Remove="Responses\Knowledge\KnowledgeResponses.json" />
     <Content Remove="Responses\Ticket\CreateTicketResponses.json" />
     <Content Remove="Responses\Main\MainResponses.json" />
@@ -25,6 +27,8 @@
     <EmbeddedResource Include="Content\Knowledge.1.0.json" />
     <EmbeddedResource Include="Content\Knowledge.json" />
     <EmbeddedResource Include="Content\Ticket.json" />
+    <EmbeddedResource Include="Content\TicketNoClose.1.0.json" />
+    <EmbeddedResource Include="Content\TicketNoClose.json" />
     <EmbeddedResource Include="Responses\Knowledge\KnowledgeResponses.json" />
     <EmbeddedResource Include="Responses\Main\MainResponses.json" />
     <EmbeddedResource Include="Responses\Shared\SharedResponses.json" />

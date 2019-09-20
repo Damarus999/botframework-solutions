@@ -84,17 +84,18 @@
       ]
     },
     {
+      "type": "TextBlock",
+      "wrap": true,
+      "text": "{ResolvedReason}",
+      "maxLines": 5
+    },
+    {
       "type": "ActionSet",
       "actions": [
         {
           "type": "Action.Submit",
           "title": "{ActionUpdateTitle}",
           "data": "{ActionUpdateTitle}"
-        },
-        {
-          "type": "Action.Submit",
-          "title": "{ActionCloseTitle}",
-          "data": "{ActionCloseTitle}"
         }
       ]
     },

@@ -896,7 +896,17 @@ namespace ITSMSkill.Dialogs
                 ResolvedReason = ticket.ResolvedReason,
                 Speak = ticket.Description,
                 Number = $"{SharedStrings.TicketNumber}{ticket.Number}",
+                ActionUpdateTitle = SharedStrings.TicketActionUpdateTitle,
+                ActionUpdateValue = string.Format(SharedStrings.TicketActionUpdateValue, ticket.Number),
+                ProviderDisplayText = string.Format(SharedStrings.PoweredBy, ticket.Provider),
             };
+
+            if (ticket.State != TicketState.Closed)
+            {
+                card.ActionCloseTitle = SharedStrings.TicketActionCloseTitle;
+                card.ActionCloseValue = string.Format(SharedStrings.TicketActionCloseValue, ticket.Number);
+            }
+
             return card;
         }
 
@@ -912,6 +922,7 @@ namespace ITSMSkill.Dialogs
                 Number = $"{SharedStrings.TicketNumber}{knowledge.Number}",
                 UrlTitle = SharedStrings.OpenKnowledge,
                 UrlLink = knowledge.Url,
+                ProviderDisplayText = string.Format(SharedStrings.PoweredBy, knowledge.Provider),
             };
             return card;
         }

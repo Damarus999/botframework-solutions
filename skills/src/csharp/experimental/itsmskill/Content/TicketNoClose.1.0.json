@@ -69,6 +69,12 @@
       ]
     },
     {
+      "type": "TextBlock",
+      "wrap": true,
+      "text": "{ResolvedReason}",
+      "maxLines": 5
+    },
+    {
       "type": "Container",
       "separator": true,
       "items": [
@@ -90,16 +96,6 @@
         "msteams": {
           "type": "imBack",
           "value": "{ActionUpdateValue}"
-        }
-      }
-    },
-    {
-      "type": "Action.Submit",
-      "title": "{ActionCloseTitle}",
-      "data": {
-        "msteams": {
-          "type": "imBack",
-          "value": "{ActionCloseValue}"
         }
       }
     }

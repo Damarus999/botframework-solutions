@@ -23,16 +23,16 @@ To configure responses for your skill project, you'll need a `.json` file and a 
 Responses can be stored in the following format to be used in your project. Each `.json` file should have a Build Action of **EmbeddedResource** to be loaded properly at runtime. 
 ```
 "templateName": {
-    "replies": [
-        {
-            "text": "Welcome to my bot, {Name}!",
-            "speak": "Welcome, {Name}!"
-        }
-    ],
-    "suggestedActions": [
-      "Help"
-    ],
-    "inputHint": "acceptingInput"
+  "replies": [
+    {
+      "text": "Welcome to my bot, {Name}!",
+      "speak": "Welcome, {Name}!"
+    }
+  ],
+  "suggestedActions": [
+    "Help"
+  ],
+  "inputHint": "acceptingInput"
 }
 ```
 
@@ -84,10 +84,10 @@ The ICardData interface is used to replace tokens in your Adaptive Card. This al
 If *MyCard.json* contains that following Adaptive TextBlock:
 ```json
 {
-    "type": "TextBlock",
-    "text": "{Name}",
-    "weight": "bolder",
-    "wrap": true
+  "type": "TextBlock",
+  "text": "{Name}",
+  "weight": "bolder",
+  "wrap": true
 }
 ```
 
@@ -116,12 +116,12 @@ The ResponseManager class loads each response file that is specified into a coll
 In `Startup.cs`, the following code initializes your ResponseManager object with the specified locales and your response files:
 
 ```csharp
-    // Configure responses
-    services.AddSingleton(sp => new ResponseManager(
-        new[] { "en", "de", "es" }, // array of supported locales
-        new MainResponses(), // Auto-generated object created by text template
-        new SharedResponses(),
-        new SampleResponses()));
+// Configure responses
+services.AddSingleton(sp => new ResponseManager(
+	new[] { "en", "de", "es" }, // array of supported locales
+	new MainResponses(), // Auto-generated object created by text template
+	new SharedResponses(),
+	new SampleResponses()));
 ```
 
 ## Using the ResponseManager
@@ -132,11 +132,9 @@ Once you have created your `.json` and `.tt` files and initialized your Response
 - Get a simple response from template with Text, Speak, InputHint, and SuggestedActions set.
 
     ```csharp
-        GetResponse(
-            string templateId,
-            StringDictionary tokens = null)
+    GetResponse(string templateId, StringDictionary tokens = null)
     ```
-    
+
     | Parameter | Description |
     | --------- | ----------- |
     | templateId | The name of the response template. |
@@ -145,7 +143,7 @@ Once you have created your `.json` and `.tt` files and initialized your Response
 ### GetCardResponse()
 
 - Get a response with an Adaptive Card attachment.
-    
+  
     ```csharp
     GetCardResponse(Card card)
     ```

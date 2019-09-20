@@ -92,7 +92,6 @@ Speech & Text responses are stored in `.json` files, and offer the ability to pr
     "inputHint": "acceptingInput"
   }
 }
-
 ```
 
 Vary your responses. By providing additional utterances to the `replies` array, your Skill will sound more natural and provide a dynamic conversation.
@@ -110,10 +109,10 @@ Use [Adaptive Cards](https://adaptivecards.io/) to deliver rich cards as visual 
 You can use variables to map data to a card's content. For example, the JSON below describes an Adaptive Card showing points of interest.
 
 ```json
-    {
-      "type": "AdaptiveCard",
-      "id": "PointOfInterestViewCard",
-    }
+{
+	"type": "AdaptiveCard",
+	"id": "PointOfInterestViewCard",
+}
 ```
 
 ## Support skill fallback
@@ -135,145 +134,149 @@ You can make this happen by sending the FallbackEvent back to Virtual Assistant,
 
 ```csharp
 protected async Task<DialogTurnResult> SendFallback(WaterfallStepContext sc, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            try
-            {
-                var state = await EmailStateAccessor.GetAsync(sc.Context);
-                // Send Fallback Event
-                if (sc.Context.Adapter is EmailSkillWebSocketBotAdapter remoteInvocationAdapter)
-                {
-                    await remoteInvocationAdapter.SendRemoteFallbackEventAsync(sc.Context, cancellationToken).ConfigureAwait(false);
-                    // Wait for the FallbackHandle event
-                    return await sc.PromptAsync(Actions.FallbackEventPrompt, new PromptOptions()).ConfigureAwait(false);
-                }
-                return await sc.NextAsync();
-            }
-            catch (Exception ex)
-            {
-                await HandleDialogExceptions(sc, ex);
-                return new DialogTurnResult(DialogTurnStatus.Cancelled, CommonUtil.DialogTurnResultCancelAllDialogs);
-            }
-        }
+{
+	try
+	{
+		var state = await EmailStateAccessor.GetAsync(sc.Context);
+		// Send Fallback Event
+		if (sc.Context.Adapter is EmailSkillWebSocketBotAdapter remoteInvocationAdapter)
+		{
+			await remoteInvocationAdapter.SendRemoteFallbackEventAsync(sc.Context, cancellationToken).ConfigureAwait(false);
+			
+			// Wait for the FallbackHandle event
+			return await sc.PromptAsync(Actions.FallbackEventPrompt, new PromptOptions()).ConfigureAwait(false);
+		}
+		
+		return await sc.NextAsync();
+	}
+	catch (Exception ex)
+	{
+		await HandleDialogExceptions(sc, ex);
+		
+		return new DialogTurnResult(DialogTurnStatus.Cancelled, CommonUtil.DialogTurnResultCancelAllDialogs);
+	}
+}
 ```
 
 If other skills can handle it, Virtual Assistant will cancel current skill and pass user input to the proper skill. If not, Virtual Assistant will send back a FallbackHandledEvent to continue current skill.
 ```json
-      "body": [
+{
+  "body": [
+    {
+      "type": "Container",
+      "items": [
         {
-          "type": "Container",
-          "items": [
+          "type": "ColumnSet",
+          "columns": [
             {
-              "type": "ColumnSet",
-              "columns": [
+              "type": "Column",
+              "verticalContentAlignment": "Center",
+              "items": [
                 {
-                  "type": "Column",
-                  "verticalContentAlignment": "Center",
-                  "items": [
-                    {
-                      "id": "Name",
-                      "type": "TextBlock",
-                      "horizontalAlignment": "Left",
-                      "spacing": "None",
-                      "size": "Large",
-                      "weight": "Bolder",
-                      "color": "Accent",
-                      "text": "{Name}"
-                    },
-                    {
-                      "id": "AvailableDetails",
-                      "type": "TextBlock",
-                      "spacing": "None",
-                      "text": "{AvailableDetails}",
-                      "isSubtle": true
-                    },
-                    {
-                      "id": "Address",
-                      "type": "TextBlock",
-                      "spacing": "None",
-                      "color": "Dark",
-                      "text": "{Street}, {City}",
-                      "isSubtle": true,
-                      "wrap": true
-                    },
-                    {
-                      "id": "Hours",
-                      "type": "TextBlock",
-                      "spacing": "None",
-                      "color": "Dark",
-                      "text": "{Hours}",
-                      "isSubtle": true,
-                      "wrap": true
-                    },
-                    {
-                      "id": "Provider",
-                      "type": "TextBlock",
-                      "horizontalAlignment": "Right",
-                      "text": "Provided by **{Provider}**",
-                      "isSubtle": true
-                    }
-                  ],
-                  "width": 90
+                  "id": "Name",
+                  "type": "TextBlock",
+                  "horizontalAlignment": "Left",
+                  "spacing": "None",
+                  "size": "Large",
+                  "weight": "Bolder",
+                  "color": "Accent",
+                  "text": "{Name}"
+                },
+                {
+                  "id": "AvailableDetails",
+                  "type": "TextBlock",
+                  "spacing": "None",
+                  "text": "{AvailableDetails}",
+                  "isSubtle": true
+                },
+                {
+                  "id": "Address",
+                  "type": "TextBlock",
+                  "spacing": "None",
+                  "color": "Dark",
+                  "text": "{Street}, {City}",
+                  "isSubtle": true,
+                  "wrap": true
+                },
+                {
+                  "id": "Hours",
+                  "type": "TextBlock",
+                  "spacing": "None",
+                  "color": "Dark",
+                  "text": "{Hours}",
+                  "isSubtle": true,
+                  "wrap": true
+                },
+                {
+                  "id": "Provider",
+                  "type": "TextBlock",
+                  "horizontalAlignment": "Right",
+                  "text": "Provided by **{Provider}**",
+                  "isSubtle": true
                 }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "Container",
-          "separator": true,
-          "items": [
-            {
-              "id": "Image",
-              "type": "Image",
-              "url": "{ImageUrl}"
+              ],
+              "width": 90
             }
           ]
         }
-      ],
-      "actions": [
+      ]
+    },
+    {
+      "type": "Container",
+      "separator": true,
+      "items": [
         {
-          "type": "Action.Submit",
-          "title": "Find a route",
-          "data": {
-            "event": {
-              "name": "IPA.ActiveLocation",
-              "text": "Find a route",
-              "value": "{Name}"
-            }
-          }
+          "id": "Image",
+          "type": "Image",
+          "url": "{ImageUrl}"
         }
-      ],
-      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-      "version": "1.0",
-      "speak": "{Index}, {Name} is located at {Street}"
+      ]
     }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Find a route",
+      "data": {
+        "event": {
+          "name": "IPA.ActiveLocation",
+          "text": "Find a route",
+          "value": "{Name}"
+        }
+      }
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.0",
+  "speak": "{Index}, {Name} is located at {Street}"
+}
 ```
 
 In the Point of Interest Skill, a route state model is passed to a Microsoft.Bot.Solutions method to render the populated card.
 
 ```csharp
-    // Populate card data model
-    var routeDirectionsModel = new RouteDirectionsModelCardData()
-    {
-        Name = destination.Name,
-        Street = destination.Street,
-        City = destination.City,
-        AvailableDetails = destination.AvailableDetails,
-        Hours = destination.Hours,
-        ImageUrl = destination.ImageUrl,
-        TravelTime = GetShortTravelTimespanString(travelTimeSpan),
-        DelayStatus = GetFormattedTrafficDelayString(trafficTimeSpan),
-        Distance = $"{(route.Summary.LengthInMeters / 1609.344).ToString("N1")} {PointOfInterestSharedStrings.MILES_ABBREVIATION}",
-        ETA = route.Summary.ArrivalTime.ToShortTimeString(),
-        TravelTimeSpeak = GetFormattedTravelTimeSpanString(travelTimeSpan),
-        TravelDelaySpeak = GetFormattedTrafficDelayString(trafficTimeSpan)
-    };
+// Populate card data model
+var routeDirectionsModel = new RouteDirectionsModelCardData()
+{
+	Name = destination.Name,
+	Street = destination.Street,
+	City = destination.City,
+	AvailableDetails = destination.AvailableDetails,
+	Hours = destination.Hours,
+	ImageUrl = destination.ImageUrl,
+	TravelTime = GetShortTravelTimespanString(travelTimeSpan),
+	DelayStatus = GetFormattedTrafficDelayString(trafficTimeSpan),
+	Distance = $"{(route.Summary.LengthInMeters / 1609.344).ToString("N1")} {PointOfInterestSharedStrings.MILES_ABBREVIATION}",
+	ETA = route.Summary.ArrivalTime.ToShortTimeString(),
+	TravelTimeSpeak = GetFormattedTravelTimeSpanString(travelTimeSpan),
+	TravelDelaySpeak = GetFormattedTrafficDelayString(trafficTimeSpan)
+};
 
-	// Instantiate a new Card with reference to above JSON
-	var card = new Card("RouteDirectionsViewCard", routeDirectionsModel);
-    
-    // Generate card response from the Skill
-    var replyMessage = ResponseManager.GetCardResponse(POISharedResponses.SingleRouteFound, card);
+// Instantiate a new Card with reference to above JSON
+var card = new Card("RouteDirectionsViewCard", routeDirectionsModel);
+
+// Generate card response from the Skill
+var replyMessage = ResponseManager.GetCardResponse(POISharedResponses.SingleRouteFound, card);
 ```
 
 When you need to show some elements in card dynamically, use `Activity GetCardResponse(string templateId, Card card, StringDictionary tokens, string containerName, IEnumerable<Card> containerItems)` to add a list of cards into a container of main card. For example, Calendar Skill adds a list of meeting cards into the meetings summary card.
@@ -360,49 +363,50 @@ By adding the name, address, and a number, the user can respond with a variety o
 
 ```c#
 protected PromptOptions GetPointOfInterestChoicePromptOptions(List<PointOfInterestModel> pointOfInterestList)
-        {
-            var options = new PromptOptions()
-            {
-                Choices = new List<Choice>(),
-            };
+{
+	var options = new PromptOptions()
+	{
+		Choices = new List<Choice>(),
+	};
 
-            for (var i = 0; i < pointOfInterestList.Count; ++i)
-            {
-                var item = pointOfInterestList[i].Name;
-                var address = pointOfInterestList[i].Street;
-    
-                List<string> synonyms = new List<string>()
-                    {
-                        item,
-                        address,
-                        (i + 1).ToString(),
-                    };
-    
-                var suggestedActionValue = item;
-    
-                // Use response resource to get formatted name if multiple have the same name
-                if (pointOfInterestList.Where(x => x.Name == pointOfInterestList[i].Name).Skip(1).Any())
-                {
-                    var promptTemplate = POISharedResponses.PointOfInterestSuggestedActionName;
-                    var promptReplacements = new StringDictionary
-                        {
-                            { "Name", item },
-                            { "Address", address },
-                        };
-                    suggestedActionValue = ResponseManager.GetResponse(promptTemplate, promptReplacements).Text;
-                }
-    
-                var choice = new Choice()
-                {
-                    Value = suggestedActionValue,
-                    Synonyms = synonyms,
-                };
-                options.Choices.Add(choice);
-            }
-    
-            options.Prompt = ResponseManager.GetResponse(POISharedResponses.PointOfInterestSelection);
-            return options;
-        }
+	for (var i = 0; i < pointOfInterestList.Count; ++i)
+	{
+		var item = pointOfInterestList[i].Name;
+		var address = pointOfInterestList[i].Street;
+
+		List<string> synonyms = new List<string>()
+		{
+			item,
+			address,
+			(i + 1).ToString(),
+		};
+
+		var suggestedActionValue = item;
+
+		// Use response resource to get formatted name if multiple have the same name
+		if (pointOfInterestList.Where(x => x.Name == pointOfInterestList[i].Name).Skip(1).Any())
+		{
+			var promptTemplate = POISharedResponses.PointOfInterestSuggestedActionName;
+			var promptReplacements = new StringDictionary
+			{
+				{ "Name", item },
+				{ "Address", address },
+			};
+			suggestedActionValue = ResponseManager.GetResponse(promptTemplate, promptReplacements).Text;
+		}
+
+		var choice = new Choice()
+		{
+			Value = suggestedActionValue,
+			Synonyms = synonyms,
+		};
+		options.Choices.Add(choice);
+	}
+
+	options.Prompt = ResponseManager.GetResponse(POISharedResponses.PointOfInterestSelection);
+	
+    return options;
+}
 ```
 
 Learn more on how you can [gather user input using a dialog prompt](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-prompts?view=azure-bot-service-4.0&tabs=csharp).
@@ -455,18 +459,18 @@ Use the `HandleDialogExceptions` method in [SkillDialogBase.cs]({{site.repo}}/bl
 ```csharp
 protected async Task HandleDialogExceptions(WaterfallStepContext sc, Exception ex)
 {
-    // send trace back to emulator
-    var trace = new Activity(type: ActivityTypes.Trace, text: $"DialogException: {ex.Message}, StackTrace: {ex.StackTrace}");
-    await sc.Context.SendActivityAsync(trace);
+	// send trace back to emulator
+	var trace = new Activity(type: ActivityTypes.Trace, text: $"DialogException: {ex.Message}, StackTrace: {ex.StackTrace}");
+	await sc.Context.SendActivityAsync(trace);
 
-    // log exception
-    TelemetryClient.TrackExceptionEx(ex, sc.Context.Activity, sc.ActiveDialog?.Id);
-    
-    // send error message to bot user
-    await sc.Context.SendActivityAsync(ResponseManager.GetResponse(SharedResponses.ErrorMessage));
-    
-    // clear state
-    var state = await ConversationStateAccessor.GetAsync(sc.Context);
+	// log exception
+	TelemetryClient.TrackExceptionEx(ex, sc.Context.Activity, sc.ActiveDialog?.Id);
+
+	// send error message to bot user
+	await sc.Context.SendActivityAsync(ResponseManager.GetResponse(SharedResponses.ErrorMessage));
+
+	// clear state
+	var state = await ConversationStateAccessor.GetAsync(sc.Context);
 	state.Clear();
 }
 ```
@@ -500,25 +504,29 @@ This can be enabled by sending a FallbackEvent back to the Virtual Assistant, to
 
 ```csharp
 protected async Task<DialogTurnResult> SendFallback(WaterfallStepContext sc, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            try
-            {
-                var state = await EmailStateAccessor.GetAsync(sc.Context);
-                // Send Fallback Event
-                if (sc.Context.Adapter is EmailSkillWebSocketBotAdapter remoteInvocationAdapter)
-                {
-                    await remoteInvocationAdapter.SendRemoteFallbackEventAsync(sc.Context, cancellationToken).ConfigureAwait(false);
-                    // Wait for the FallbackHandle event
-                    return await sc.PromptAsync(Actions.FallbackEventPrompt, new PromptOptions()).ConfigureAwait(false);
-                }
-                return await sc.NextAsync();
-            }
-            catch (Exception ex)
-            {
-                await HandleDialogExceptions(sc, ex);
-                return new DialogTurnResult(DialogTurnStatus.Cancelled, CommonUtil.DialogTurnResultCancelAllDialogs);
-            }
-        }
+{
+	try
+	{
+		var state = await EmailStateAccessor.GetAsync(sc.Context);
+
+		// Send Fallback Event
+		if (sc.Context.Adapter is EmailSkillWebSocketBotAdapter remoteInvocationAdapter)
+		{
+			await remoteInvocationAdapter.SendRemoteFallbackEventAsync(sc.Context, cancellationToken).ConfigureAwait(false);
+
+			// Wait for the FallbackHandle event
+			return await sc.PromptAsync(Actions.FallbackEventPrompt, new PromptOptions()).ConfigureAwait(false);
+		}
+
+		return await sc.NextAsync();
+	}
+	catch (Exception ex)
+	{
+		await HandleDialogExceptions(sc, ex);
+
+		return new DialogTurnResult(DialogTurnStatus.Cancelled, CommonUtil.DialogTurnResultCancelAllDialogs);
+	}
+}
 ```
 
 If it can be routed to another Skill, the Virtual Assistant will cancel the current Skill and pass user input to the proper one. Otherwise, the Virtual Assistant returns a FallbackHandledEVent to the current Skill in order to continue.

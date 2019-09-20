@@ -139,25 +139,25 @@ msbot list --bot YOURBOTFILE.bot --secret YOUR_BOT_SECRET
 ```
 
 ```json
-  {
-    "botFilePath": ".//YOURBOTFILE.bot",
-    "botFileSecret": "YOUR_BOT_SECRET",
-    "ApplicationInsights": {
-      "InstrumentationKey": "YOUR_INSTRUMENTATION_KEY"
-    }
+{
+  "botFilePath": ".//YOURBOTFILE.bot",
+  "botFileSecret": "YOUR_BOT_SECRET",
+  "ApplicationInsights": {
+    "InstrumentationKey": "YOUR_INSTRUMENTATION_KEY"
   }
+}
 ```
 
 - Finally, add the `.bot` file paths for each of your language configurations (English only at this time).
 
 ```json
 "defaultLocale": "en-us",
-  "languageModels": {
-    "en": {
-      "botFilePath": ".//LocaleConfigurations//YOUR_EN_BOT_PATH.bot",
-      "botFileSecret": ""
-    }
-    }
+"languageModels": {
+  "en": {
+    "botFilePath": ".//LocaleConfigurations//YOUR_EN_BOT_PATH.bot",
+    "botFileSecret": ""
+  }
+}
 ```
 
 Once you have followed the deployment instructions above, open the provided `.bot` file with the Bot Framework Emulator.
@@ -169,33 +169,33 @@ Follow the instructions below to add the Automotive Skill to an existing Virtual
 1. Update the Virtual Assistant deployment scripts.
     - Add the additional automotive skill LUIS models to the bot.recipe file located within your assistant project: `assistant/DeploymentScripts/en/bot.recipe`
 
-        ```json
-        {
-            "type": "luis",
-            "id": "settings",
-            "name": "settings",
-            "luPath": "../skills/automotiveskill/automotiveskill/CognitiveModels/LUIS/en/settings.lu"
-        },
-        {
-            "type": "luis",
-            "id": "settings_name",
-            "name": "settings_name",
-            "luPath": "../skills/automotiveskill/automotiveskill/CognitiveModels/LUIS/en/settings_name.lu"
-        },
-        {
-            "type": "luis",
-            "id": "settings_value",
-            "name": "settings_value",
-            "luPath": "../skills/automotiveskill/automotiveskill/CognitiveModels/LUIS/en/settings_value.lu"
-        },
-        ```
+    ```json
+    {
+      "type": "luis",
+      "id": "settings",
+      "name": "settings",
+      "luPath": "../skills/automotiveskill/automotiveskill/CognitiveModels/LUIS/en/settings.lu"
+    },
+    {
+      "type": "luis",
+      "id": "settings_name",
+      "name": "settings_name",
+      "luPath": "../skills/automotiveskill/automotiveskill/CognitiveModels/LUIS/en/settings_name.lu"
+    },
+    {
+      "type": "luis",
+      "id": "settings_value",
+      "name": "settings_value",
+      "luPath": "../skills/automotiveskill/automotiveskill/CognitiveModels/LUIS/en/settings_value.lu"
+    },
+    ```
 
-    - Add dispatch references to the core LUIS intents for the skill within the **assistant/CognitiveModels/en/dispatch.lu** file as shown below. Only the vehicle settings model is required for dispatch. This enables the Dispatcher to understand your new capabilities and route utterances to your skill
-
-        ```
-        # l_Automotive
-        - [VEHICLE_SETTINGS_CHANGE](../../../../skills/automotiveskill/automotiveskill/CognitiveModels/LUIS/en/settings_dispatch.lu#VEHICLE_SETTINGS_CHANGE)
-        ```
+- Add dispatch references to the core LUIS intents for the skill within the **assistant/CognitiveModels/en/dispatch.lu** file as shown below. Only the vehicle settings model is required for dispatch. This enables the Dispatcher to understand your new capabilities and route utterances to your skill
+  
+	```
+	# l_Automotive
+	- [VEHICLE_SETTINGS_CHANGE](../../../../skills/automotiveskill/automotiveskill/CognitiveModels/LUIS/en/settings_dispatch.lu#VEHICLE_SETTINGS_CHANGE)
+	```
 
 2. Run the following script to deploy the new Automotive Skill LUIS models and to update the dispatcher.
 

@@ -73,7 +73,7 @@ The Phone Skill requires the following dependencies for end to end operation, wh
 
 > Review the pricing and terms for the services and adjust to suit your scenario.
 
-To deploy your services using the default configuration, from the folder where your have cloned the GitHub repo follow the steps either for [C#]({{site.baseurl}}/tutorials/csharp/create-skill/4_provision_your_azure_resources.md) or for [TypeScript]({{site.baseurl}}/tutorials/typescript/create-skill/4_provision_your_azure_resources/.md).
+To deploy your services using the default configuration, follow the steps in this common deployment documentation page ([C#]({{site.baseurl}}/tutorials/csharp/create-skill/4_provision_your_azure_resources.md)/[TypeScript]({{site.baseurl}}/tutorials/typescript/create-skill/4_provision_your_azure_resources/.md)) from the folder where you have cloned the GitHub repo.
 
 ### Authentication Connection Settings
 
